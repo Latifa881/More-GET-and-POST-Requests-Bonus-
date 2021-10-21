@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var btSave:Button
     lateinit var btGet:Button
     lateinit var rvMain: RecyclerView
-    val detailsArray=ArrayList<Details.Data>()
+    val detailsArray=ArrayList<UsersItem>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -49,15 +49,13 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun addData(name: String) {
-
         val apiInterface = APIClient().getClient()?.create(APIInterface::class.java)
         if (apiInterface != null) {
-            apiInterface.addDetails(Details.Data(name))
-                //apiInterface.addNames(etName.text.toString())
-                .enqueue(object : Callback<Details.Data> {
+            apiInterface.addDetails(UsersItem("KSA",name,0))
+                .enqueue(object : Callback<UsersItem> {
                     override fun onResponse(
-                        call: Call<Details.Data>,
-                        response: Response<Details.Data>
+                        call: Call<UsersItem>,
+                        response: Response<UsersItem>
                     ) {
                         Toast.makeText(
                             this@MainActivity,
@@ -67,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
                     }
 
-                    override fun onFailure(call: Call<Details.Data>, t: Throwable) {
+                    override fun onFailure(call: Call<UsersItem>, t: Throwable) {
                         Toast.makeText(
                             this@MainActivity,
                             "failed to add",
@@ -89,16 +87,16 @@ class MainActivity : AppCompatActivity() {
         progressDialog.show()
         if (apiInterface != null) {
 
-            apiInterface.getDetails().enqueue(object : Callback<ArrayList<Details.Data>> {
+            apiInterface.getDetails().enqueue(object : Callback<Users> {
                 override fun onResponse(
-                    call: Call<ArrayList<Details.Data>>,
-                    response: Response<ArrayList<Details.Data>>
+                    call: Call<Users>,
+                    response: Response<Users>
                 ) {
                     progressDialog.dismiss()
                     Log.d("TAG", response.code().toString() + "")
                     val resultArray=response.body()!!
                     for (data in resultArray) {
-                        detailsArray.add(Details.Data(data.name))
+                        detailsArray.add(UsersItem("",data.name,0))
                     }
                     rvMain.smoothScrollToPosition(rvMain.getBottom())
                     rvMain.adapter!!.notifyDataSetChanged()
@@ -106,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                override fun onFailure(call: Call<ArrayList<Details.Data>>, t: Throwable) {
+                override fun onFailure(call: Call<Users>, t: Throwable) {
                     progressDialog.dismiss()
                     call.cancel()
                 }

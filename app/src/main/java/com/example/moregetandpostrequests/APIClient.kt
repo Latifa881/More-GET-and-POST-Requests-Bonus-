@@ -12,7 +12,7 @@ class APIClient {
     fun getClient(): Retrofit? {
 
         retrofit = Retrofit.Builder()
-            .baseUrl("https://dojo-recipes.herokuapp.com/")
+            .baseUrl("https://dojo-recipes.herokuapp.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit

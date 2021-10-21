@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_row.view.*
 
-class RecyclerViewAdapter (private val details:ArrayList<Details.Data>): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>(){
+class RecyclerViewAdapter (private val details:ArrayList<UsersItem>): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>(){
     class ItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     }
